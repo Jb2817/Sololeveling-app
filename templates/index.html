@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ user.name }}!</h1>
+    <p>Level: {{ user.level }}</p>
+    <p>Points: {{ user.num_points }}</p>
+    <h2>Goals:</h2>
+    <ul>
+        {% for goal in user.goals %}
+            <li>{{ goal }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Tasks:</h2>
+    <ul>
+        {% for task in session['tasks'] %}
+            <li>{{ task.task_name }}: {{ task.completed_value }}/{{ task.target_value }} {{ task.unit }}</li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('update_progress') }}" method="post">
+        <label for="task_number">Task Number:</label>
+        <input type="number" id="task_number" name="task_number" min="1" max="{{ session['tasks']|length }}" required>
+        <label for="value">Progress:</label>
+        <input type="number" id="value" name="value" min="0" required>
+        <button type="submit">Update Progress</button>
+    </form>
+</body>
+</html>
